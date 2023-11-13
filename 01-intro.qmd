@@ -1,0 +1,20 @@
+# Figures in Scientific Research
+
+Figures are fundamental to scientific research, serving a role far beyond mere data representation. The research process involves several steps, beginning with the collection of raw data. Following this, data undergoes preprocessing, filtering, and processing, with **data visualization playing a crucial role at every stage**.
+
+Exploratory Data Analysis (EDA), often reliant on visual methods, is the first step in understanding and interpreting data. This phase may involve multiple iterations of cleaning and reanalyzing the dataset, each with its unique visualization requirements. As the research progresses, results are typically communicated through figures in presentations and publications.
+
+Understanding that **figure design principles vary depending on their purpose** is crucial. In exploratory stages, the goal is to comprehend the data, which may involve experimenting with multiple representations, utilizing complete datasets instead of summaries, and incorporating interactive elements. Conversely, figures intended for scientific communication should focus on conveying key messages. These may utilize summary representations and require a more refined design.
+
+Additionally, the design principles can differ based on whether a figure is meant for a presentation, poster, publication, or supplementary material. We aim to summarize scientifically proven and widely accepted principles of scientific figure design, providing guidance for each stage of the research process.
+
+## What is an Effective Figure? 
+
+An effective figure in scientific research is more than just a visual representation of data; it is a tool for communication and understanding. The effectiveness of a figure is determined by several key characteristics:
+
+1. **Purpose-Driven Design:** The design of the figure should align with its intended purpose. For exploratory analysis, a figure might be more flexible, showcasing various aspects of the data to aid in understanding complex relationships. A figure designed for exploration should in general work with the complete dataset, plotting individual data points / distributions rather than working with summarisations to avoid misinterpretations. In contrast, a figure intended to convey results should be more focused, highlighting the key findings in a straightforward manner.
+2. **Clear and Focused Message:** An effective figure communicates a specific message or insight without overwhelming the viewer with extraneous information. It should guide the viewer to the intended conclusion, emphasizing the most critical aspects of the data. Each figure should have one clear, primary message.
+3. **Ease of Understanding and Interpretation:** The figure should be designed to be easily interpretable by its intended audience. This involves clear labeling, appropriate scaling, and the use of intuitive visual elements. It should allow the viewer to accurately grasp the underlying data and its implications without ambiguity.
+4. **Accurate Representation of Data:** The figure must represent the data truthfully, without distortion or bias. This includes selecting appropriate types of graphs or visualizations that accurately reflect the nature and relationships within the data.
+5. **Good Design:** The figure should be visually appealing, with a clear and consistent design. This includes the use of appropriate colors, fonts, and other visual elements. The figure should be easy to read and understand. The figure should be accessible, with the information being conveyed in a format that is accessible to all readers.
+

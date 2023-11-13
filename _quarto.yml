@@ -1,0 +1,23 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Scientific Figure Design"
+  author: "Melike Dönertaş"
+  date: "11/13/2023"
+  chapters:
+    - index.qmd
+    - 01-intro.qmd
+    - 02-preperation.qmd
+    - 03-dataviz.qmd
+    - 04-channels.qmd
+    - 05-plottypes.qmd
+    - checklist.qmd
+
+format:
+  html:
+    theme: sandstone
+    
+execute:
+  freeze: auto

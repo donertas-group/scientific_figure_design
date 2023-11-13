@@ -1,0 +1,219 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Scientific Figure Design",
+    "section": "",
+    "text": "Preface\nIn this booklet, we aim to compile a set of principles and guidelines for designing figures for data exploration, presentation, and publication. Primarily aimed at students and researchers in bioinformatics and computational biology, particularly members of the Dönertaş Research Group, this resource is also intended to be beneficial for anyone interested in data visualization. Thus, we have made its content publicly available."
+  },
+  {
+    "objectID": "index.html#objectives",
+    "href": "index.html#objectives",
+    "title": "Scientific Figure Design",
+    "section": "Objectives",
+    "text": "Objectives\nThe booklet serves several purposes:\n\nTo provide a basic introduction to figure design principles.\nTo offer a reference point for generating specific types of figures, mainly in R but potentially later including examples in Python.\nTo guide on the do’s and don’ts when preparing figures for exploration, presentation, and publication."
+  },
+  {
+    "objectID": "index.html#prerequsiites",
+    "href": "index.html#prerequsiites",
+    "title": "Scientific Figure Design",
+    "section": "Prerequsiites",
+    "text": "Prerequsiites\nThe initial version of this booklet assumes that the reader is an R and ggplot user. However, we may include more examples in Python and other languages in future editions."
+  },
+  {
+    "objectID": "index.html#scope-and-limitations",
+    "href": "index.html#scope-and-limitations",
+    "title": "Scientific Figure Design",
+    "section": "Scope and Limitations",
+    "text": "Scope and Limitations\nThis booklet focuses on visualizations frequently encountered in computational biology and bioinformatics. While it covers a broad range of figure types, it does not encompass every aspect of data visualization. Techniques or software not directly related to our field may not be covered."
+  },
+  {
+    "objectID": "index.html#feedback-and-collaboration",
+    "href": "index.html#feedback-and-collaboration",
+    "title": "Scientific Figure Design",
+    "section": "Feedback and Collaboration",
+    "text": "Feedback and Collaboration\nWe welcome any feedback and suggestions. Please feel free to open an issue or send a pull request for updates on our github repo."
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Scientific Figure Design",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nSpecial thanks go to the attendees of the short courses and workshops we have conducted as part of the ISCB SC RSG Turkey events. Their questions and feedback have helped us improve the content of this booklet.\nIn preparing this document, we have utilized several resources:\n\n“Visualization Analysis and Design” by Tamara Munzner\nR Graph Gallery\nBabraham Institute Informatics Courses"
+  },
+  {
+    "objectID": "01-intro.html#what-is-an-effective-figure",
+    "href": "01-intro.html#what-is-an-effective-figure",
+    "title": "1  Figures in Scientific Research",
+    "section": "1.1 What is an Effective Figure?",
+    "text": "1.1 What is an Effective Figure?\nAn effective figure in scientific research is more than just a visual representation of data; it is a tool for communication and understanding. The effectiveness of a figure is determined by several key characteristics:\n\nPurpose-Driven Design: The design of the figure should align with its intended purpose. For exploratory analysis, a figure might be more flexible, showcasing various aspects of the data to aid in understanding complex relationships. A figure designed for exploration should in general work with the complete dataset, plotting individual data points / distributions rather than working with summarisations to avoid misinterpretations. In contrast, a figure intended to convey results should be more focused, highlighting the key findings in a straightforward manner.\nClear and Focused Message: An effective figure communicates a specific message or insight without overwhelming the viewer with extraneous information. It should guide the viewer to the intended conclusion, emphasizing the most critical aspects of the data. Each figure should have one clear, primary message.\nEase of Understanding and Interpretation: The figure should be designed to be easily interpretable by its intended audience. This involves clear labeling, appropriate scaling, and the use of intuitive visual elements. It should allow the viewer to accurately grasp the underlying data and its implications without ambiguity.\nAccurate Representation of Data: The figure must represent the data truthfully, without distortion or bias. This includes selecting appropriate types of graphs or visualizations that accurately reflect the nature and relationships within the data.\nGood Design: The figure should be visually appealing, with a clear and consistent design. This includes the use of appropriate colors, fonts, and other visual elements. The figure should be easy to read and understand. The figure should be accessible, with the information being conveyed in a format that is accessible to all readers."
+  },
+  {
+    "objectID": "02-preperation.html#libraries",
+    "href": "02-preperation.html#libraries",
+    "title": "2  Setup",
+    "section": "2.1 Libraries",
+    "text": "2.1 Libraries\nThere are a few libraries that we recommend using:\n\nlibrary(tidyverse) # Includes ggplot2 + other data wrangling packages\nlibrary(ggpubr) # Publication-ready figures & ggpubr theme\nlibrary(ggthemes) # Additional themes for ggplot2\nlibrary(viridis) # Viridis color palette\nlibrary(colorspace) # For color manipulation\nlibrary(ggforce) # Additional geoms\nlibrary(hexbin) # For hexbin plots\nlibrary(ggridges) # For creating ridgeline plots\nlibrary(gridExtra) # Helps in arranging ggplot2 graphs (inset graphs)\nlibrary(GGally) # Includes ggpairs and other useful functions"
+  },
+  {
+    "objectID": "02-preperation.html#theme",
+    "href": "02-preperation.html#theme",
+    "title": "2  Setup",
+    "section": "2.2 Theme",
+    "text": "2.2 Theme\nA predefined theme is recommended for all plots within a given project, publication, or presentation to ensure consistency. You can set a default theme using the syntax below:\n\ntheme_set(theme_pubr(base_size = 10, legend = 'bottom'))\n\nIn this example, we set the default theme to theme_pubr from the ggpubr package. This theme has a clean appearance and suitabile for publications. You can modify it on a per-plot basis or include additional arguments for global settings. For a different style, particularly one with panel grid lines, the theme_bw from the ggplot2 package can be used:\n\ntheme_set(theme_bw(base_size = 10))\n\nThe base_size argument sets a base font size for all figures, a useful feature for ensuring consistency, especially in publications."
+  },
+  {
+    "objectID": "03-dataviz.html#elements-of-graphics",
+    "href": "03-dataviz.html#elements-of-graphics",
+    "title": "3  Data Visualization",
+    "section": "3.1 Elements of Graphics",
+    "text": "3.1 Elements of Graphics\nAlthough each figure plots different data, there are a number of elements recycled to represent data. e.g. points, lines, rectangles, position, color, length:\n\na &lt;- ggplot(mtcars, aes(wt, mpg)) + \n  geom_point() + \n  theme_pubr(base_size = 8)\n\nb &lt;- ggplot(economics_long, aes(date, value01, colour = variable)) + \n  geom_line() + \n  guides(color = 'none') + \n  theme_pubr(base_size = 8)\n\nc &lt;- ggplot(mpg, aes(class)) + \n  geom_bar() + \n  coord_flip() + \n  theme_pubr(base_size = 8)\n\nggarrange(a, b, c, ncol = 3, nrow = 1)\n\n\n\n\nThere are two main types of elements: marks and channels:\n\nMarks are the geometric shapes that represent items or links, e.g. points, lines.\nChannels control how these marks appear and they code for the attributes, e.g. color, length.\n\nLet’s have a look at the following examples and decide what these elements are:\n\na &lt;- data.frame(x = 1:3, y = c(1, 2.5, 5)) %&gt;%\n  ggplot(aes(x = x, y = y)) +\n  geom_bar(stat = 'identity') + \n  xlab('') + \n  ylab('') +\n  ggtitle('Mark: Rectangle\\nChannel: Length')\n\nb &lt;- data.frame(x = rnorm(10), y = rnorm(10)) %&gt;%\n  ggplot(aes(x = x, y = y)) +\n  geom_point(shape = 17, size = 2.5) + \n  xlab('') + \n  ylab('') +\n  ggtitle('Mark: Triangle\\nChannel: x and y position')\n\nc &lt;- data.frame(group = as.factor(letters[1:3]), y = c(25, 45, 30)) %&gt;%\n  ggplot(aes(fill = group, y = y, x = \"\")) +\n  geom_bar(stat = 'identity') +\n  coord_polar('y', start = 0) +\n  theme_void() +\n  ggtitle('Mark: Circle segment\\nChannel: Color and angle')\n\nd &lt;- gapminder::gapminder %&gt;% \n  filter(year == \"2007\") %&gt;% \n  dplyr::select(-year) %&gt;%\n  arrange(desc(pop)) %&gt;%\n  mutate(country = factor(country, country)) %&gt;%\n  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, fill = continent)) +\n  geom_point(alpha = 0.5, shape = 21, color = \"black\") +\n  scale_size(range = c(.1, 24), name = \"Population (M)\") +\n  scale_fill_viridis(discrete = TRUE, guide = FALSE, option = \"A\") +\n  theme(legend.position = \"bottom\") +\n  ylab(\"\") +\n  xlab(\"\") +\n  theme(legend.position = \"none\") +\n  ggtitle('Mark: Circle\\nChannel: Color, area, x and y position')\n\nggarrange(a, b, c, d)"
+  },
+  {
+    "objectID": "04-channels.html#channel-and-data-properties",
+    "href": "04-channels.html#channel-and-data-properties",
+    "title": "4  Channels",
+    "section": "4.1 Channel and data properties",
+    "text": "4.1 Channel and data properties\nThere are three different types of data:\n\nQuantitative: e.g. height, weight, gene expression level\nOrdered: e.g. size (small, medium, large), age groups\nCategorical: e.g. genes, populations, WT vs. mutant\n\nAnd 2 types of channels:\n\nQuantitative: position on a scale (x and y variables), length (generally y variable), angle (y in a polar coordinate if theta is ‘y’), area (size), color (saturation or lightness)\nQualitative: spatial grouping (x or y variables with categorical data), color (hue), shape (shape variable)\n\n\n4.1.1 Special note on colors\nIt is important to note that you can code both quantiative and qualitative variables with color. However, different properties should be used. Also, it is better to use pre-defined color palettes. There are many packages offering various palettes, however, we recommend brewer.pal from RColorBrewer (it is available in ggplot2 as scale_color_brewer) as most comprehensive and friendly. Here are the sequential palettes, which should be used for quantitative or ordered variables:\n\nlibrary(RColorBrewer)\ndisplay.brewer.all(type = 'seq') \n\n\n\n\nHere are diverging palettes, which are again for quantitative variables but with a diverging scale. For example, it makes sense to use diverging palettes for correlations or change in gene expression as it can go both ways.\n\ndisplay.brewer.all(type = 'div') \n\n\n\n\nAnd the qualitative palettes:\n\ndisplay.brewer.all(type = 'qual')\n\n\n\n\nIt worths mentioning that palette called ‘paired’ includes colors that represent both qualitative both also potentially quantitative scale. For example, this palette can be used when both all and significant results for multiple categories are represented, e.g. using brighter colors for significant ones and the others to represent background. As mentioned before, these palettes are available through scale_color_brewer, however, you can also access individual colors using:\n\nbrewer.pal(12, 'Paired')\n\n [1] \"#A6CEE3\" \"#1F78B4\" \"#B2DF8A\" \"#33A02C\" \"#FB9A99\" \"#E31A1C\" \"#FDBF6F\"\n [8] \"#FF7F00\" \"#CAB2D6\" \"#6A3D9A\" \"#FFFF99\" \"#B15928\"\n\n\n\n\n4.1.2 Channel Effectiveness\n\n4.1.2.1 Accuracy\nChannel accuracy defines how close the human perception is to some objective measurement. For example, doubled brightness would be perceived as increased brightness but not as much as doubling it. Length is perceived very well.\n\n\n4.1.2.2 Discriminability\nDiscriminability deals with whether the differences between items are easy for humans to perceive. For example, it is relatively reasonable to expect discrimination of 6-8 colors, but it is almost impossible to differentiate 20. Similarly, number of shapes that can be easily distinguished is limited. Moreover, filled shapes are differentiated easier.\n\n\n4.1.2.3 Separability\nSeparability is about how different channels interact and how separable they are. For example, position and color (hue) are easy to separate and thus could be used to encode different information.\n\n# generate data\nn &lt;- 20\ndf &lt;- data.frame(\n  group = factor(letters[sample(1:2, n, replace = TRUE)]),\n  group2 = factor(letters[sample(1:2, n, replace = TRUE)]),\n  y = rnorm(n),\n  x = rnorm(n)\n) %&gt;%\n  mutate(\n    cl1 = c(colorspace::RGB(0.3, 0, 0, 0.3), colorspace::RGB(0.8, 0, 0, 0.3))[group],\n    cl2 = c(colorspace::RGB(0, 0.8, 0, 0.3), colorspace::RGB(0, 0.3, 0, 0.3))[group2]\n  )\n\ndf$colx &lt;- sapply(1:n, function(i) {\n  x &lt;- colorspace::mixcolor(0.4, df$cl1[[i]], df$cl2[[i]])@coords\n  rgb(x[1, 1], x[1, 2], x[1, 3])\n})\n\n\ndf %&gt;%\n  ggplot(aes(x = group, color = group2, y = y)) +\n  geom_jitter(width = 0.1, size = 3) +\n  theme_void() +\n  guides(color = 'none') +\n  coord_fixed() +\n  theme(panel.border = element_rect(fill = NA))\n\n\n\n\nHowever, it is not as easy to separate color (hue) and size. It is easy to separate large ones from the small ones - however separating color in the smaller ones is not as easy.\n\ndf %&gt;%\n  ggplot(aes(x = x, color = group2, y = y, size = group)) +\n  geom_jitter(width = 0.1) +\n  scale_size_discrete(range = c(3, 7)) +\n  theme_void() +\n  guides(color = FALSE, size = FALSE) +\n  coord_fixed() +\n  theme(panel.border = element_rect(fill = NA))\n\nWarning: Using size for a discrete variable is not advised.\n\n\nWarning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use \"none\" instead as\nof ggplot2 3.3.4.\n\n\n\n\n\nNext is an example of major interference: using height and width to encode different information. This is ineffective because what we first perceive is the area, and thus the grouping is perceived as small, medium, and large - where medium includes both narrow & tall and wide & short.\n\ndf %&gt;%\n  ggplot() +\n  geom_rect(aes(xmin = x, ymin = y, xmax = x + c(0.1, 0.3)[group], ymax = y + c(0.1, 0.3)[group2])) +\n  theme_void() +\n  coord_fixed() +\n  theme(panel.border = element_rect(fill = NA))\n\n\n\n\nNext is an example of using fully integrated channels: red and green channels of the RGB color space. These are two channels but perceived as the color, an integrated value.\n\ndf %&gt;%\n  ggplot(aes(x = x, y = y, color = colx)) +\n  geom_point(size = 3) +\n  theme_void() +\n  scale_color_identity() +\n  coord_fixed() +\n  theme(panel.border = element_rect(fill=NA))\n\n\n\n\nIt is not straightforward to say if using fully separable or integrated channels is better - it would depend on the data you want to encode. If for example, it is more important to convey groups in three, it may make sense to use width and height. If the data should be fully separable, then using spatial distribution and color is better.\n\n\n4.1.2.4 Popout\nAnother property is that some channels are better in focusing attention to a distinct item. As you can see from the following examples, popout depends both on the channel and the surrounding items. For example, color pops out easily (panel a) and less dependent on the number of points (panel d). Whereas popout of a shape depends more on the number of points (panel b and e). Popout also depends on if multiple channels are combined. Even with smaller number of points, it is not as easy as it was before to detect red circle (panel c and f).\n\nn &lt;- 10\npntsize &lt;- 5\np1 &lt;- data.frame(x = rnorm(n), y = rnorm(n), group = letters[rep(1:2, each = n / 2)], pop = c(TRUE, rep(FALSE, n - 1))) %&gt;%\n  ggplot(aes(x = x, y = y, color = pop)) +\n  geom_point(size = pntsize) +\n  scale_color_gdocs() +\n  guides(color = FALSE)\n\nn &lt;- 50\np2 &lt;- data.frame(x = rnorm(n), y = rnorm(n), group = letters[rep(1:2, each = n / 2)], pop = c(TRUE, rep(FALSE, n - 1))) %&gt;%\n  ggplot(aes(x = x, y = y, color = pop)) +\n  geom_point(size = pntsize) +\n  scale_color_gdocs() +\n  guides(color = FALSE)\n\nn &lt;- 10\np3 &lt;- data.frame(x = rnorm(n), y = rnorm(n), group = letters[rep(1:2, each = n / 2)], pop = c(TRUE, rep(FALSE, n - 1))) %&gt;%\n  ggplot(aes(x = x, y = y, shape = pop)) +\n  geom_point(size = pntsize) +\n  scale_shape_manual(values = c(15, 19)) +\n  guides(shape = FALSE)\n\nn &lt;- 50\np4 &lt;- data.frame(x = rnorm(n), y = rnorm(n), group = letters[rep(1:2, each = n / 2)], pop = c(TRUE, rep(FALSE, n - 1))) %&gt;%\n  ggplot(aes(x = x, y = y, shape = pop)) +\n  geom_point(size = pntsize) +\n  scale_shape_manual(values = c(15, 19)) +\n  guides(shape = FALSE)\n\nn &lt;- 10\np5 &lt;- data.frame(x = rnorm(n), y = rnorm(n), group = letters[rep(2:1, each = n / 2)], pop = c(TRUE, rep(FALSE, n - 1))) %&gt;%\n  ggplot(aes(x = x, y = y, shape = pop, color = group)) +\n  geom_point(size = pntsize) +\n  scale_color_gdocs() +\n  scale_shape_manual(values = c(15, 19)) +\n  guides(shape = FALSE, color = FALSE)\n\nn &lt;- 50\np6 &lt;- data.frame(x = rnorm(n), y = rnorm(n), group = letters[rep(2:1, each = n / 2)], pop = c(TRUE, rep(FALSE, n - 1))) %&gt;%\n  ggplot(aes(x = x, y = y, shape = pop, color = group)) +\n  geom_point(size = pntsize) +\n  scale_color_gdocs() +\n  scale_shape_manual(values = c(15, 19)) +\n  guides(shape = FALSE, color = FALSE)\n\nggarrange(p1, p3, p5, p2, p4, p6, ncol = 3, nrow = 2, labels = 'auto')\n\n\n\n\n\n\n4.1.2.5 Grouping\nGrouping items by containment, connections, proximity, or similarity (using same shape, color) is a way to enhance the effectiveness by giving the message that the items linked forms a group. One very relevant example for biology is where we have comparisons of different categories for different types. For example, here, let’s say we have measured two different properties for 3 types of mutations. If I plot it without any grouping, it is not very clear what I want to compare and what should be percieved as a group:\n\ndf &lt;- data.frame(\n  y = sample(seq(0.1, 1, by = 0.01), 6),\n  gr1 = c('promoter', 'missense', 'synonymous')[rep(1:3, each = 2)],\n  gr2 = paste('gr', 1:2, sep = \"_\")[rep(1:2, 3)]\n) %&gt;%\n  mutate(gr3 = paste(gr1, gr2, sep = '\\n'))\n\n# Without grouping\ndf %&gt;%\n  ggplot(aes(x = gr3, y = y)) +\n  geom_bar(stat = 'identity', position = 'dodge') +\n  xlab('') +\n  ylab('')\n\n\n\n\nHowever, if I group mutations based their type, it becomes clear that I want to compare two categories within each type.\n\n# With grouping\ndf %&gt;%\n  ggplot(aes(x = gr1, y = y, fill = gr2)) +\n  geom_bar(stat = 'identity', position = 'dodge') +\n  xlab('') +\n  ylab('') +\n  scale_fill_gdocs() +\n  guides(fill = FALSE)\n\n\n\n\nSide Note: Similarly, ordering categories based on some information, instead of using random or alphabetic ordering may help to convey information. If we plot the life expectancy in 15 countries, randomly chosen - without ordering them, it might not be easy to compare them if the values are close. Instead, by a simple ordering we can see which country has the highest life expectancy and compare different countries easily. However, it is important to note that sometimes - if the purpose of the figure is just to present data and not to give a message, using alphabetical ordering may also help as then people can easily find the country they search for (a better option is having an interactive plot, if possible).\n\ncntx &lt;- sample(unique(gapminder::gapminder$country), 15)\n\n# Without ordering\ngapminder::gapminder %&gt;%\n  filter(country %in% cntx) %&gt;%\n  group_by(country) %&gt;%\n  summarise(lifeExp = median(lifeExp)) %&gt;%\n  ggplot(aes(x = country, y = lifeExp)) +\n  geom_bar(stat = 'identity') +\n  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +\n  xlab('') +\n  ylab('Average Life Expectency')\n\n\n\n# With ordering\ngapminder::gapminder %&gt;%\n  filter(country %in% cntx) %&gt;%\n  group_by(country) %&gt;%\n  summarise(lifeExp = median(lifeExp)) %&gt;%\n  ggplot(aes(x = reorder(country, lifeExp), y = lifeExp)) +\n  geom_bar(stat = 'identity') +\n  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +\n  xlab('') +\n  ylab('Average Life Expectency')"
+  },
+  {
+    "objectID": "05-plottypes.html#histogram-density-plots",
+    "href": "05-plottypes.html#histogram-density-plots",
+    "title": "5  Different types of plots",
+    "section": "5.1 Histogram / Density Plots",
+    "text": "5.1 Histogram / Density Plots\n\ndata &lt;- read.table(\"https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv\", header = TRUE) %&gt;%\n  filter(price &lt; 300)\n\np1 &lt;- data %&gt;%\n  ggplot(aes(x = price)) +\n  geom_histogram(binwidth = 15, fill = \"#69b3a2\", color = \"#e9ecef\", alpha = 0.9) +\n  ggtitle(\"Histogram\")\n\np2 &lt;- data %&gt;%\n  ggplot(aes(x = price)) +\n  geom_density(fill = \"#69b3a2\", color = \"#e9ecef\", alpha = 0.8) +\n  ggtitle('Density Plot')\n\nggarrange(p1, p2, labels = 'auto')\n\n\n\n\nPurpose: Both exploration and presentation\nEffectiveness: Good\nScalability: Poor (Good if we have just one category but it becomes difficult to plot multiple categories at once. except: see ggridges package)\nNotes: One of the biggest issues with histograms / density plots is choosing the ‘correct’ number of bins / binwidth. For example, in the following plot, the same data is plotted using four different choices of bins and some of these could be misleading if the binsize is not chosen objectively.\n\nx1 &lt;- data %&gt;%\n  ggplot(aes(x = price)) +\n  geom_histogram(binwidth = 3, fill = \"#69b3a2\", color = \"#e9ecef\", alpha = 0.9) +\n  ggtitle(\"Bin size = 3\")\n\nx2 &lt;- data %&gt;%\n  ggplot(aes(x = price)) +\n  geom_histogram(binwidth = 15, fill = \"#69b3a2\", color = \"#e9ecef\", alpha = 0.9) +\n  ggtitle(\"Bin size = 15\")\n\nx3 &lt;- data %&gt;%\n  ggplot(aes(x = price)) +\n  geom_histogram(binwidth = 30, fill = \"#69b3a2\", color = \"#e9ecef\", alpha = 0.9) +\n  ggtitle(\"Bin size = 30\")\n\nx4 &lt;- data %&gt;%\n  ggplot(aes(x = price)) +\n  geom_histogram(binwidth = 100, fill = \"#69b3a2\", color = \"#e9ecef\", alpha = 0.9) +\n  ggtitle(\"Bin size = 100\")\n\nggarrange(x1, x2, x3, x4, ncol = 2, nrow = 2)"
+  },
+  {
+    "objectID": "05-plottypes.html#boxplots",
+    "href": "05-plottypes.html#boxplots",
+    "title": "5  Different types of plots",
+    "section": "5.2 Boxplots",
+    "text": "5.2 Boxplots\nAnother plot types that makes comparison of multiple groups easier is boxplots.\nPurpose: Presentation (Not good for exploration because the data is hidden)\nEffectiveness: Good\nScalability: Good\n\ndata &lt;- data.frame(\n  name = c(rep(\"A\", 500), rep(\"B\", 500), rep(\"B\", 500), rep(\"C\", 20), rep('D', 100)),\n  value = c(rnorm(500, 10, 5), rnorm(500, 13, 1), rnorm(500, 18, 1), rnorm(20, 25, 4), rnorm(100, 12, 1))\n)\n\ndata %&gt;%\n  ggplot(aes(x = name, y = value, fill = name)) +\n  geom_boxplot() +\n  scale_fill_viridis(discrete = TRUE, alpha = 0.6, option = \"A\") +\n  xlab(\"\") +\n  guides(fill = FALSE)\n\nWarning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use \"none\" instead as\nof ggplot2 3.3.4.\n\n\n\n\n\nNotes: Note that boxplot summarizes the distribution and actually hides the data. See the next plot for exact distribution:\n\ndata %&gt;%\n  ggplot(aes(x = name, y = value, fill = name)) +\n  geom_boxplot(outlier.shape = NA) +\n  scale_fill_viridis(discrete = TRUE, alpha = 0.6, option = \"A\") +\n  geom_jitter(color = \"black\", size = 0.2, alpha = 0.9) +\n  xlab(\"\") +\n  guides(fill = FALSE)\n\n\n\n\nHere it is clear that distribution of category B is bimodal and it is not possible to understand this unless we use geom_jitter to project data points. A potential problem with using geom_jitter, however, is that it decreases the scalability (if the number of data points increases, it is not possible to see anything)."
+  },
+  {
+    "objectID": "05-plottypes.html#violin-plot",
+    "href": "05-plottypes.html#violin-plot",
+    "title": "5  Different types of plots",
+    "section": "5.3 Violin Plot",
+    "text": "5.3 Violin Plot\nViolin plot overcomes the scalability issues in histograms and boxplots with jitter.\nPurpose: Both exploration and presentation\nEffectiveness: Good\nScalability: Good\n\ndata %&gt;%\n  ggplot(aes(x = name, y = value, fill = name)) +\n  geom_violin() +\n  scale_fill_viridis(discrete = TRUE, alpha = 0.6, option = \"A\") +\n  xlab(\"\") +\n  guides(fill = FALSE)\n\n\n\n\nNotes: The number of data points is hidden in violin plots. Especially if the number of data points is low, or different between categories, it is important to annotate the figure with the numbers."
+  },
+  {
+    "objectID": "05-plottypes.html#bar-plot",
+    "href": "05-plottypes.html#bar-plot",
+    "title": "5  Different types of plots",
+    "section": "5.4 Bar plot",
+    "text": "5.4 Bar plot\nBar plots are generally used for comparisons.\nPurpose:Presentation\nEffectiveness:Good\nScalability:Good\n\ndata &lt;- iris %&gt;% select(Species, Sepal.Length)\nmy_sum &lt;- data %&gt;%\n  group_by(Species) %&gt;%\n  summarise(\n    n = n(),\n    mean = mean(Sepal.Length),\n    sd = sd(Sepal.Length)\n  ) %&gt;%\n  mutate(\n    se = sd / sqrt(n),\n    ic = se * qt((1 - 0.05) / 2 + .5, n - 1)\n  )\n\nggplot(my_sum) +\n  geom_bar(aes(x = Species, y = mean), stat = \"identity\", fill = \"forestgreen\", alpha = 0.5) +\n  geom_errorbar(aes(x = Species, ymin = mean - sd, ymax = mean + sd), width = 0.4, colour = \"orange\", alpha = 0.9, size = 1.5)\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\n\n\n\n\n\nNotes:The major problem with the barplots is that it hides the data and people generally don’t think much about what they plot using error bars (could be sd, SE, confidence interval etc. - but each should be interpreted differently).\n\npsd &lt;- ggplot(my_sum) +\n  geom_bar(aes(x = Species, y = mean), stat = \"identity\", fill = \"forestgreen\", alpha = 0.5) +\n  geom_errorbar(aes(x = Species, ymin = mean - sd, ymax = mean + sd), width = 0.4, colour = \"orange\", alpha = 0.9, size = 1.5) +\n  ggtitle(\"using standard deviation\")\n\npse &lt;- ggplot(my_sum) +\n  geom_bar(aes(x = Species, y = mean), stat = \"identity\", fill = \"forestgreen\", alpha = 0.5) +\n  geom_errorbar(aes(x = Species, ymin = mean - se, ymax = mean + se), width = 0.4, colour = \"orange\", alpha = 0.9, size = 1.5) +\n  ggtitle(\"using standard error\")\n\npci &lt;- ggplot(my_sum) +\n  geom_bar(aes(x = Species, y = mean), stat = \"identity\", fill = \"forestgreen\", alpha = 0.5) +\n  geom_errorbar(aes(x = Species, ymin = mean - ic, ymax = mean + ic), width = 0.4, colour = \"orange\", alpha = 0.9, size = 1.5) +\n  ggtitle(\"using confidence interval\")\n\nggarrange(psd, pse, pci, ncol = 3)"
+  },
+  {
+    "objectID": "05-plottypes.html#stripchart",
+    "href": "05-plottypes.html#stripchart",
+    "title": "5  Different types of plots",
+    "section": "5.5 Stripchart",
+    "text": "5.5 Stripchart\nOne way to overcome the issues with barplot is to use stripchart.\nPurpose:Both for exploration and presentation\nEffectiveness:Good\nScalability:Bad (both increasing the number of categories and the numbers decreases the effectiveness)\nNotes:It is important to pay attention where the baseline is. Sometimes there is no pre-defined baseline (panel a). However, if there is a baseline of 0, for example, then the same data would reflect that although there is a difference in different species, the effect is not that big.\n\np1 &lt;- data %&gt;%\n  ggplot(aes(x = Species, y = Sepal.Length)) +\n  stat_summary(fun = mean, fun.min = function(x) quantile(x, 0.25), fun.max = function(x) quantile(x, 0.75), colour = \"darkred\", size = 0.5) +\n  geom_sina(size = 0.5, alpha = 0.7)\n\np2 &lt;- data %&gt;%\n  ggplot(aes(x = Species, y = Sepal.Length)) +\n  stat_summary(fun = mean, fun.min = function(x) quantile(x, 0.25), fun.max = function(x) quantile(x, 0.75), colour = \"darkred\", size = 0.5) +\n  geom_sina(size = 0.5, alpha = 0.7) +\n  ylim(0, 8)\n\nggarrange(p1, p2, ncol = 2, labels = 'auto')"
+  },
+  {
+    "objectID": "05-plottypes.html#lineplot",
+    "href": "05-plottypes.html#lineplot",
+    "title": "5  Different types of plots",
+    "section": "5.6 Lineplot",
+    "text": "5.6 Lineplot\nTo show changes in one variable, with respect to another one, we use lineplot.\nPurpose:Both exploration and presentation\nEffectiveness:Good\nScalability:Bad (incrase in the number of categories decreases effectiveness)\n\ndata &lt;- read.table(\"https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered.csv\", header = TRUE)\ndata$date &lt;- as.Date(data$date)\n\ndata %&gt;%\n  tail(10) %&gt;%\n  ggplot(aes(x = date, y = value)) +\n  geom_line(color = \"grey\") +\n  geom_point(shape = 21, color = \"black\", fill = \"#69b3a2\", size = 3) +\n  ggtitle(\"Evolution of bitcoin price\")\n\n\n\n\nNotes:It is important to note that the line between points implies a connection & evolution. So, lineplot should be used for continuous or ordinal data."
+  },
+  {
+    "objectID": "05-plottypes.html#scatterplot",
+    "href": "05-plottypes.html#scatterplot",
+    "title": "5  Different types of plots",
+    "section": "5.7 Scatterplot",
+    "text": "5.7 Scatterplot\nTo plot the relationship between two variables we use scatterplots.\nPurpose:Both for exploration and presentation\nEffectiveness:Good\nScalability:Intermediate (increased number of data points will not be distingueshed after some point because of high overlap)\n\np1 &lt;- diamonds %&gt;%\n  ggplot(aes(x = carat, y = price)) +\n  geom_point(size = 0.3, alpha = 0.4)\n\np1\n\n\n\n\nNotes:An important aspect to consider is the axes ratio. Note that both of the following figures are showing the same data:\n\np1 \n\n\n\n\n\np1"
+  },
+  {
+    "objectID": "05-plottypes.html#density-2d-hex-plot",
+    "href": "05-plottypes.html#density-2d-hex-plot",
+    "title": "5  Different types of plots",
+    "section": "5.8 Density 2D (Hex) Plot",
+    "text": "5.8 Density 2D (Hex) Plot\nA way to overcome the issue with scalability in scatterplot is using hex-plots. Basically it bins data into hexagons and fills the hexagons by the number of data points in it.\nPurpose:Both for exploration and presentation\nEffectiveness:Good\nScalability:Good\n\ndiamonds %&gt;%\n  ggplot(aes(x = carat, y = price)) +\n  geom_hex(bins = 100) +\n  scale_fill_viridis_c()\n\n\n\n\nNote that the distribution of number of data points in hexagons are actually not linear. Using a logarithmic transformation, we can visualise smaller changes better (if this is what we should be focusing on), however, it is very important to change the legend to make sure log2 transformation is reflected.\n\ndiamonds %&gt;%\n  ggplot(aes(x = carat, y = price)) +\n  geom_hex(bins = 100) +\n  scale_fill_viridis_c(trans = 'log2', guide = guide_colorbar('log2 count'))"
+  },
+  {
+    "objectID": "05-plottypes.html#correlogram",
+    "href": "05-plottypes.html#correlogram",
+    "title": "5  Different types of plots",
+    "section": "5.9 Correlogram",
+    "text": "5.9 Correlogram\nScatter or hexplot is good to see the relationship between two variables. However, if we have more variables then we can use a summarization and plot the correlations as correlograms.\nPurpose:Presentation only (it hides the data)\nEffectiveness:Good\nScalability:Intermediate\n\ndata &lt;- data.frame(\n  var1 = 1:100 + rnorm(100, sd = 20),\n  v2 = 1:100 + rnorm(100, sd = 27),\n  v3 = rep(1, 100) + rnorm(100, sd = 1)\n)\ndata$v4 = data$var1 ** 2\ndata$v5 = -(data$var1 ** 2)\nggcorr(data, method = c(\"everything\", \"pearson\")) + theme_void()\n\n\n\n\nNotes:It is important to make sure the underlying scatterplots are checked even though they are not presented!\nAnother alternative is to use ‘ggpairs’ function in GGally, which summarises the data, correlations and also plots the scatterplots. However, the scalability is low as it is only possible to use it for a limited number of variables:\n\nlibrary(GGally)\ndata(flea)\nggpairs(flea, columns = 2:4, ggplot2::aes(colour = species))"
+  },
+  {
+    "objectID": "05-plottypes.html#pie-chart",
+    "href": "05-plottypes.html#pie-chart",
+    "title": "5  Different types of plots",
+    "section": "5.10 Pie Chart",
+    "text": "5.10 Pie Chart\nTo represent the composition of a whole, a widely used method is to use pie chart - although I strong recommend not using it.\nPurpose:Presentation only\nEffectiveness:Bad (it is not easy for humans to percieve the differences between segments)\nScalability:Poor\nA better alternative to represent the same data is to use stacked and normalized bar chart (panel b).\n\nspecie &lt;- c(rep(\"sorgho\", 3), rep(\"poacee\", 3), rep(\"banana\", 3), rep(\"triticum\", 3))\ncondition &lt;- rep(c(\"normal\", \"stress\", \"Nitrogen\"), 4)\nvalue &lt;- abs(rnorm(12, 0, 15))\ndata &lt;- data.frame(specie, condition, value)\n\np1 &lt;- ggplot(data, aes(fill = condition, y = value, x = '')) + \n  geom_bar(position = \"fill\", stat = \"identity\") +\n  facet_wrap(~specie) +\n  coord_polar('y', start = 0) +\n  theme_void()\n\np2 &lt;- ggplot(data, aes(fill = condition, y = value, x = specie)) + \n  geom_bar(position = \"fill\", stat = \"identity\")\n\nggarrange(p1, p2, ncol = 2, labels = 'auto', common.legend = TRUE)"
+  },
+  {
+    "objectID": "checklist.html#initial-setup-and-design",
+    "href": "checklist.html#initial-setup-and-design",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.1 Initial Setup and Design",
+    "text": "6.1 Initial Setup and Design\n\nCreate figures in real size (e.g., ggsave(…, …, units = ‘cm’, width = X); X = ~8 for 1 column figure/panel and ~16 for 2 columns).\nChoose plot types based on purpose (exploration vs presentation) and scale (number of data points and categories).\nEnsure the figure conveys one clear, primary, obvious message.\nSelect and represent correct channels (or channel combinations) considering accuracy, discriminability, separability, popout, grouping, and ordering.\nPrioritize the most important data using the most effective channel for clarity and impact.\nFor exploratory purposes, consider creating interactive figures."
+  },
+  {
+    "objectID": "checklist.html#visualization-and-data-representation",
+    "href": "checklist.html#visualization-and-data-representation",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.2 Visualization and Data Representation",
+    "text": "6.2 Visualization and Data Representation\n\nAvoid unnecessary figures for presentations and publications; perform exhaustive exploratory analysis with visualizations for exploration.\nRepresent data accurately (e.g., no removed data points, no cut axes; if absolutely necessary, annotate openly and provide supplementary plots without distortion).\nSupplement summarized representations with plots showing full data distributions.\nNo 3D plots - they are misleading and unnecessary."
+  },
+  {
+    "objectID": "checklist.html#color-and-style-consistency",
+    "href": "checklist.html#color-and-style-consistency",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.3 Color and Style Consistency",
+    "text": "6.3 Color and Style Consistency\n\nUse consistent colors across figures (e.g., young and old samples always represented with the same colors).\nImplement a color blind friendly color scheme.\nStick to existing palettes instead of inventing new color schemes.\nBe mindful that not all colors have the same visual impact or accessibility; choose wisely."
+  },
+  {
+    "objectID": "checklist.html#technical-aspects-and-reproducibility",
+    "href": "checklist.html#technical-aspects-and-reproducibility",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.4 Technical Aspects and Reproducibility",
+    "text": "6.4 Technical Aspects and Reproducibility\n\nPrepare figures in high-resolution, publication-ready vector format (eps/pdf); consider additional pngs with smaller file size for presentations.\nCreate data figures using R or Python; cite visualization packages and their versions.\nCreate multi-panel figures using programming languages, do not combine in PowerPoint, Word, Illustrator, Inkscape, etc.\nDo not open/modify vector formatted data figures in editors like Illustrator/Inkscape.\nEnsure the figure creation process is fully reproducible and transparent.\nProvide separate .csv/.tsv files with the exact data frame used for each figure.\nInclude separate code to reproduce the exact figure using the provided .csv/.tsv file.\nSave ggplot objects (.rds) in R for potential future theme adjustments.\nCite BioRender as required by the license when used."
+  },
+  {
+    "objectID": "checklist.html#statistical-representation",
+    "href": "checklist.html#statistical-representation",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.5 Statistical Representation",
+    "text": "6.5 Statistical Representation\n\nIf performing statistical tests, state the estimate type (or test name if unclear), exact p-value, and include n where data points are not explicitly plotted.\nInclude individual data points in all box plots, violin plots, etc., summarizations if there are less than 10 data points."
+  },
+  {
+    "objectID": "checklist.html#text-and-labeling",
+    "href": "checklist.html#text-and-labeling",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.6 Text and Labeling",
+    "text": "6.6 Text and Labeling\n\nEnsure all text in the figure is legible and clear (min 6pt for most journals, bigger for presentations - ps. ggplot2 text has a normalization factor of 2.845276).\nUse a consistent font style and (if possible) size throughout a report/paper.\nLabel multi-panel figures with lower-case letters using a consistent and bold font type."
+  },
+  {
+    "objectID": "checklist.html#legend-and-caption",
+    "href": "checklist.html#legend-and-caption",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.7 Legend and Caption",
+    "text": "6.7 Legend and Caption\n\nProvide well-annotated (informative but concise) legends for all color, shape, etc., descriptions.\nInclude figure captions detailing what is plotted, and what x, y, color, etc., each channel represents."
+  },
+  {
+    "objectID": "checklist.html#design-and-aesthetics",
+    "href": "checklist.html#design-and-aesthetics",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.8 Design and Aesthetics",
+    "text": "6.8 Design and Aesthetics\n\nStrive for symmetrical alignment in the layout of figures to improve comprehension.\nSpace elements within figures appropriately; spacing is crucial for readability and visual flow."
+  },
+  {
+    "objectID": "checklist.html#review-and-feedback",
+    "href": "checklist.html#review-and-feedback",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.9 Review and Feedback",
+    "text": "6.9 Review and Feedback\n\nSeek peer review for clarity and effectiveness."
+  },
+  {
+    "objectID": "checklist.html#compliance-with-journal-guidelines",
+    "href": "checklist.html#compliance-with-journal-guidelines",
+    "title": "6  Ultimate Figure Checklist",
+    "section": "6.10 Compliance with Journal Guidelines",
+    "text": "6.10 Compliance with Journal Guidelines\n\nCheck and adhere to specific figure preparation guidelines of the target journal or conference."
+  }
+]

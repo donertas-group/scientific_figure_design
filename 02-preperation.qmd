@@ -1,0 +1,39 @@
+# Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, message = F, fig.align = 'center', 
+fig.height= 2.75, fig.width = 3.14, warning = F)
+```
+
+## Libraries
+
+There are a few libraries that we recommend using:
+
+```{r, echo=T}
+library(tidyverse) # Includes ggplot2 + other data wrangling packages
+library(ggpubr) # Publication-ready figures & ggpubr theme
+library(ggthemes) # Additional themes for ggplot2
+library(viridis) # Viridis color palette
+library(colorspace) # For color manipulation
+library(ggforce) # Additional geoms
+library(hexbin) # For hexbin plots
+library(ggridges) # For creating ridgeline plots
+library(gridExtra) # Helps in arranging ggplot2 graphs (inset graphs)
+library(GGally) # Includes ggpairs and other useful functions
+```
+
+## Theme
+
+A predefined theme is recommended for all plots within a given project, publication, or presentation to ensure consistency. You can set a default theme using the syntax below:
+
+```{r}
+theme_set(theme_pubr(base_size = 10, legend = 'bottom'))
+```
+
+In this example, we set the default theme to `theme_pubr` from the `ggpubr` package. This theme has a clean appearance and suitabile for publications. You can modify it on a per-plot basis or include additional arguments for global settings. For a different style, particularly one with panel grid lines, the `theme_bw` from the `ggplot2` package can be used:
+
+```{r}
+theme_set(theme_bw(base_size = 10))
+```
+
+The `base_size` argument sets a base font size for all figures, a useful feature for ensuring consistency, especially in publications.

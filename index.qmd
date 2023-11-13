@@ -1,0 +1,33 @@
+# Preface {.unnumbered}
+
+In this booklet, we aim to compile a set of principles and guidelines for designing figures for data exploration, presentation, and publication. Primarily aimed at students and researchers in bioinformatics and computational biology, particularly members of the [Dönertaş Research Group](donertas-group.github.io), this resource is also intended to be beneficial for anyone interested in data visualization. Thus, we have made its content publicly available. 
+
+## Objectives
+
+The booklet serves several purposes:
+
+1. To provide a basic introduction to figure design principles.
+2. To offer a reference point for generating specific types of figures, mainly in R but potentially later including examples in Python.
+3. To guide on the do's and don'ts when preparing figures for exploration, presentation, and publication.
+
+## Prerequsiites
+
+The initial version of this booklet assumes that the reader is an R and ggplot user. However, we may include more examples in Python and other languages in future editions.
+
+## Scope and Limitations
+
+This booklet focuses on visualizations frequently encountered in computational biology and bioinformatics. While it covers a broad range of figure types, it does not encompass every aspect of data visualization. Techniques or software not directly related to our field may not be covered. 
+
+## Feedback and Collaboration 
+
+We welcome any feedback and suggestions. Please feel free to open an issue or send a pull request for updates on our github repo. 
+
+## Acknowledgements
+
+Special thanks go to the attendees of the short courses and workshops we have conducted as part of the ISCB SC RSG Turkey events. Their questions and feedback have helped us improve the content of this booklet.
+
+In preparing this document, we have utilized several resources:
+
+1. "[Visualization Analysis and Design](https://www.amazon.de/-/en/Tamara-Munzner/dp/1466508914)" by Tamara Munzner
+2. [R Graph Gallery](https://r-graph-gallery.com/)
+3. [Babraham Institute Informatics Courses](https://www.bioinformatics.babraham.ac.uk/training.html)

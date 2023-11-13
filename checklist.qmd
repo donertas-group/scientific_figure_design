@@ -1,0 +1,55 @@
+# Ultimate Figure Checklist
+
+## Initial Setup and Design
+- [ ] Create figures in real size (e.g., ggsave(..., ..., units = 'cm', width = X); X = ~8 for 1 column figure/panel and ~16 for 2 columns).
+- [ ] Choose plot types based on purpose (exploration vs presentation) and scale (number of data points and categories).
+- [ ] Ensure the figure conveys one clear, primary, obvious message.
+- [ ] Select and represent correct channels (or channel combinations) considering accuracy, discriminability, separability, popout, grouping, and ordering.
+- [ ] Prioritize the most important data using the most effective channel for clarity and impact.
+- [ ] For exploratory purposes, consider creating interactive figures.
+
+## Visualization and Data Representation
+- [ ] Avoid unnecessary figures for presentations and publications; perform exhaustive exploratory analysis with visualizations for exploration.
+- [ ] Represent data accurately (e.g., no removed data points, no cut axes; if absolutely necessary, annotate openly and provide supplementary plots without distortion).
+- [ ] Supplement summarized representations with plots showing full data distributions.
+- [ ] No 3D plots - they are misleading and unnecessary.
+
+## Color and Style Consistency
+- [ ] Use consistent colors across figures (e.g., young and old samples always represented with the same colors).
+- [ ] Implement a color blind friendly color scheme.
+- [ ] Stick to existing palettes instead of inventing new color schemes.
+- [ ] Be mindful that not all colors have the same visual impact or accessibility; choose wisely.
+
+## Technical Aspects and Reproducibility
+- [ ] Prepare figures in high-resolution, publication-ready vector format (eps/pdf); consider additional pngs with smaller file size for presentations.
+- [ ] Create data figures using R or Python; cite visualization packages and their versions.
+- [ ] Create multi-panel figures using programming languages, do not combine in PowerPoint, Word, Illustrator, Inkscape, etc.
+- [ ] Do not open/modify vector formatted data figures in editors like Illustrator/Inkscape.
+- [ ] Ensure the figure creation process is fully reproducible and transparent.
+- [ ] Provide separate .csv/.tsv files with the exact data frame used for each figure.
+- [ ] Include separate code to reproduce the exact figure using the provided .csv/.tsv file.
+- [ ] Save ggplot objects (.rds) in R for potential future theme adjustments.
+- [ ] Cite BioRender as required by the license when used.
+
+## Statistical Representation
+- [ ] If performing statistical tests, state the estimate type (or test name if unclear), exact p-value, and include n where data points are not explicitly plotted.
+- [ ] Include individual data points in all box plots, violin plots, etc., summarizations if there are less than 10 data points.
+
+## Text and Labeling
+- [ ] Ensure all text in the figure is legible and clear (min 6pt for most journals, bigger for presentations - ps. ggplot2 text has a normalization factor of 2.845276).
+- [ ] Use a consistent font style and (if possible) size throughout a report/paper.
+- [ ] Label multi-panel figures with lower-case letters using a consistent and bold font type.
+
+## Legend and Caption
+- [ ] Provide well-annotated (informative but concise) legends for all color, shape, etc., descriptions.
+- [ ] Include figure captions detailing what is plotted, and what x, y, color, etc., each channel represents.
+
+## Design and Aesthetics
+- [ ] Strive for symmetrical alignment in the layout of figures to improve comprehension.
+- [ ] Space elements within figures appropriately; spacing is crucial for readability and visual flow.
+
+## Review and Feedback
+- [ ] Seek peer review for clarity and effectiveness.
+
+## Compliance with Journal Guidelines
+- [ ] Check and adhere to specific figure preparation guidelines of the target journal or conference.

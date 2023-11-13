@@ -1,0 +1,344 @@
+# Different types of plots
+
+```{r}
+#| echo: FALSE
+#| message: FALSE
+#| error: FALSE
+
+source("common.R")
+```
+
+Here, we cover some of the widely used charts. To decide what kind of chart we will use, besides the type of the data we want to plot, we consider three things: purpose (exploration or presentation), effectiveness, and scalability. 
+
+***Please note that most of the examples are taken directly from [R Graph Gallery](https://www.r-graph-gallery.com/) or modified slightly. To learn more about different charts, please have a look at the website.***
+
+## Histogram / Density Plots
+
+```{r, fig.width = 6.57, echo =T}
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", header = TRUE) %>%
+  filter(price < 300)
+
+p1 <- data %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 15, fill = "#69b3a2", color = "#e9ecef", alpha = 0.9) +
+  ggtitle("Histogram")
+
+p2 <- data %>%
+  ggplot(aes(x = price)) +
+  geom_density(fill = "#69b3a2", color = "#e9ecef", alpha = 0.8) +
+  ggtitle('Density Plot')
+
+ggarrange(p1, p2, labels = 'auto')
+```
+
+**Purpose:** Both exploration and presentation
+
+**Effectiveness:** Good
+
+**Scalability:** Poor (Good if we have just one category but it becomes difficult to plot multiple categories at once. except: see ggridges package)
+
+**Notes:** One of the biggest issues with histograms / density plots is choosing the 'correct' number of bins / binwidth. For example, in the following plot, the same data is plotted using four different choices of bins and some of these could be misleading if the binsize is not chosen objectively. 
+
+```{r, fig.height=6.57, fig.width=6.57, echo =T}
+x1 <- data %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 3, fill = "#69b3a2", color = "#e9ecef", alpha = 0.9) +
+  ggtitle("Bin size = 3")
+
+x2 <- data %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 15, fill = "#69b3a2", color = "#e9ecef", alpha = 0.9) +
+  ggtitle("Bin size = 15")
+
+x3 <- data %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 30, fill = "#69b3a2", color = "#e9ecef", alpha = 0.9) +
+  ggtitle("Bin size = 30")
+
+x4 <- data %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 100, fill = "#69b3a2", color = "#e9ecef", alpha = 0.9) +
+  ggtitle("Bin size = 100")
+
+ggarrange(x1, x2, x3, x4, ncol = 2, nrow = 2)
+```
+
+## Boxplots
+
+Another plot types that makes comparison of multiple groups easier is boxplots. 
+
+**Purpose:** Presentation (Not good for exploration because the data is hidden)
+
+**Effectiveness:** Good
+
+**Scalability:** Good
+
+```{r, echo =T}
+data <- data.frame(
+  name = c(rep("A", 500), rep("B", 500), rep("B", 500), rep("C", 20), rep('D', 100)),
+  value = c(rnorm(500, 10, 5), rnorm(500, 13, 1), rnorm(500, 18, 1), rnorm(20, 25, 4), rnorm(100, 12, 1))
+)
+
+data %>%
+  ggplot(aes(x = name, y = value, fill = name)) +
+  geom_boxplot() +
+  scale_fill_viridis(discrete = TRUE, alpha = 0.6, option = "A") +
+  xlab("") +
+  guides(fill = FALSE)
+```
+
+**Notes:** Note that boxplot summarizes the distribution and actually hides the data. See the next plot for exact distribution:
+
+```{r, echo =T}
+data %>%
+  ggplot(aes(x = name, y = value, fill = name)) +
+  geom_boxplot(outlier.shape = NA) +
+  scale_fill_viridis(discrete = TRUE, alpha = 0.6, option = "A") +
+  geom_jitter(color = "black", size = 0.2, alpha = 0.9) +
+  xlab("") +
+  guides(fill = FALSE)
+```
+
+Here it is clear that distribution of category B is bimodal and it is not possible to understand this unless we use geom_jitter to project data points. A potential problem with using geom_jitter, however, is that it decreases the scalability (if the number of data points increases, it is not possible to see anything).
+
+## Violin Plot
+
+Violin plot overcomes the scalability issues in histograms and boxplots with jitter. 
+
+**Purpose:** Both exploration and presentation
+
+**Effectiveness:** Good
+
+**Scalability:** Good
+
+```{r, echo =T}
+data %>%
+  ggplot(aes(x = name, y = value, fill = name)) +
+  geom_violin() +
+  scale_fill_viridis(discrete = TRUE, alpha = 0.6, option = "A") +
+  xlab("") +
+  guides(fill = FALSE)
+```
+
+**Notes:** The number of data points is hidden in violin plots. Especially if the number of data points is low, or different between categories, it is important to annotate the figure with the numbers. 
+
+## Bar plot
+
+Bar plots are generally used for comparisons. 
+
+**Purpose:**Presentation
+
+**Effectiveness:**Good
+
+**Scalability:**Good
+
+```{r, echo =T}
+data <- iris %>% select(Species, Sepal.Length)
+my_sum <- data %>%
+  group_by(Species) %>%
+  summarise(
+    n = n(),
+    mean = mean(Sepal.Length),
+    sd = sd(Sepal.Length)
+  ) %>%
+  mutate(
+    se = sd / sqrt(n),
+    ic = se * qt((1 - 0.05) / 2 + .5, n - 1)
+  )
+
+ggplot(my_sum) +
+  geom_bar(aes(x = Species, y = mean), stat = "identity", fill = "forestgreen", alpha = 0.5) +
+  geom_errorbar(aes(x = Species, ymin = mean - sd, ymax = mean + sd), width = 0.4, colour = "orange", alpha = 0.9, size = 1.5)
+
+```
+
+**Notes:**The major problem with the barplots is that it hides the data and people generally don't think much about what they plot using error bars (could be sd, SE, confidence interval etc. - but each should be interpreted differently). 
+
+```{r,fig.width=8,fig.height=4,echo=T}
+psd <- ggplot(my_sum) +
+  geom_bar(aes(x = Species, y = mean), stat = "identity", fill = "forestgreen", alpha = 0.5) +
+  geom_errorbar(aes(x = Species, ymin = mean - sd, ymax = mean + sd), width = 0.4, colour = "orange", alpha = 0.9, size = 1.5) +
+  ggtitle("using standard deviation")
+
+pse <- ggplot(my_sum) +
+  geom_bar(aes(x = Species, y = mean), stat = "identity", fill = "forestgreen", alpha = 0.5) +
+  geom_errorbar(aes(x = Species, ymin = mean - se, ymax = mean + se), width = 0.4, colour = "orange", alpha = 0.9, size = 1.5) +
+  ggtitle("using standard error")
+
+pci <- ggplot(my_sum) +
+  geom_bar(aes(x = Species, y = mean), stat = "identity", fill = "forestgreen", alpha = 0.5) +
+  geom_errorbar(aes(x = Species, ymin = mean - ic, ymax = mean + ic), width = 0.4, colour = "orange", alpha = 0.9, size = 1.5) +
+  ggtitle("using confidence interval")
+
+ggarrange(psd, pse, pci, ncol = 3)
+```
+
+## Stripchart
+
+One way to overcome the issues with barplot is to use stripchart. 
+
+**Purpose:**Both for exploration and presentation
+
+**Effectiveness:**Good
+
+**Scalability:**Bad (both increasing the number of categories and the numbers decreases the effectiveness)
+
+**Notes:**It is important to pay attention where the baseline is. Sometimes there is no pre-defined baseline (panel a). However, if there is a baseline of 0, for example, then the same data would reflect that although there is a difference in different species, the effect is not that big.
+
+```{r, fig.width=6.57, echo =T}
+p1 <- data %>%
+  ggplot(aes(x = Species, y = Sepal.Length)) +
+  stat_summary(fun = mean, fun.min = function(x) quantile(x, 0.25), fun.max = function(x) quantile(x, 0.75), colour = "darkred", size = 0.5) +
+  geom_sina(size = 0.5, alpha = 0.7)
+
+p2 <- data %>%
+  ggplot(aes(x = Species, y = Sepal.Length)) +
+  stat_summary(fun = mean, fun.min = function(x) quantile(x, 0.25), fun.max = function(x) quantile(x, 0.75), colour = "darkred", size = 0.5) +
+  geom_sina(size = 0.5, alpha = 0.7) +
+  ylim(0, 8)
+
+ggarrange(p1, p2, ncol = 2, labels = 'auto')
+```
+
+## Lineplot
+
+To show changes in one variable, with respect to another one, we use lineplot.
+
+**Purpose:**Both exploration and presentation
+
+**Effectiveness:**Good
+
+**Scalability:**Bad (incrase in the number of categories decreases effectiveness)
+
+```{r,echo =T}
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered.csv", header = TRUE)
+data$date <- as.Date(data$date)
+
+data %>%
+  tail(10) %>%
+  ggplot(aes(x = date, y = value)) +
+  geom_line(color = "grey") +
+  geom_point(shape = 21, color = "black", fill = "#69b3a2", size = 3) +
+  ggtitle("Evolution of bitcoin price")
+
+```
+
+**Notes:**It is important to note that the line between points implies a connection & evolution. So, lineplot should be used for continuous or ordinal data. 
+
+## Scatterplot
+
+To plot the relationship between two variables we use scatterplots. 
+
+**Purpose:**Both for exploration and presentation
+
+**Effectiveness:**Good
+
+**Scalability:**Intermediate (increased number of data points will not be distingueshed after some point because of high overlap)
+
+```{r,echo=T}
+p1 <- diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point(size = 0.3, alpha = 0.4)
+
+p1
+```
+
+**Notes:**An important aspect to consider is the axes ratio. Note that both of the following figures are showing the same data:
+
+```{r,fig.width=3}
+p1 
+```
+
+```{r,fig.width=15}
+p1 
+```
+
+## Density 2D (Hex) Plot
+
+A way to overcome the issue with scalability in scatterplot is using hex-plots. Basically it bins data into hexagons and fills the hexagons by the number of data points in it.
+
+**Purpose:**Both for exploration and presentation
+
+**Effectiveness:**Good
+
+**Scalability:**Good
+
+```{r,echo =T}
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_hex(bins = 100) +
+  scale_fill_viridis_c()
+```
+
+Note that the distribution of number of data points in hexagons are actually not linear. Using a logarithmic transformation, we can visualise smaller changes better (if this is what we should be focusing on), however, it is very important to change the legend to make sure log2 transformation is reflected. 
+
+```{r,echo=T}
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_hex(bins = 100) +
+  scale_fill_viridis_c(trans = 'log2', guide = guide_colorbar('log2 count'))
+```
+
+## Correlogram
+
+Scatter or hexplot is good to see the relationship between two variables. However, if we have more variables then we can use a summarization and plot the correlations as correlograms.
+
+**Purpose:**Presentation only (it hides the data)
+
+**Effectiveness:**Good
+
+**Scalability:**Intermediate
+
+```{r,echo=T}
+data <- data.frame(
+  var1 = 1:100 + rnorm(100, sd = 20),
+  v2 = 1:100 + rnorm(100, sd = 27),
+  v3 = rep(1, 100) + rnorm(100, sd = 1)
+)
+data$v4 = data$var1 ** 2
+data$v5 = -(data$var1 ** 2)
+ggcorr(data, method = c("everything", "pearson")) + theme_void()
+```
+
+**Notes:**It is important to make sure the underlying scatterplots are checked even though they are not presented!
+
+Another alternative is to use 'ggpairs' function in GGally, which summarises the data, correlations and also plots the scatterplots. However, the scalability is low as it is only possible to use it for a limited number of variables:
+
+```{r,fig.width=6.57, fig.height=6.57,echo=T}
+library(GGally)
+data(flea)
+ggpairs(flea, columns = 2:4, ggplot2::aes(colour = species))
+```
+
+## Pie Chart
+
+To represent the composition of a whole, a widely used method is to use pie chart - although I strong recommend not using it. 
+
+**Purpose:**Presentation only
+
+**Effectiveness:**Bad (it is not easy for humans to percieve the differences between segments)
+
+**Scalability:**Poor
+
+A better alternative to represent the same data is to use stacked and normalized bar chart (panel b).
+
+```{r,echo=T,fig.width=6.57}
+specie <- c(rep("sorgho", 3), rep("poacee", 3), rep("banana", 3), rep("triticum", 3))
+condition <- rep(c("normal", "stress", "Nitrogen"), 4)
+value <- abs(rnorm(12, 0, 15))
+data <- data.frame(specie, condition, value)
+
+p1 <- ggplot(data, aes(fill = condition, y = value, x = '')) + 
+  geom_bar(position = "fill", stat = "identity") +
+  facet_wrap(~specie) +
+  coord_polar('y', start = 0) +
+  theme_void()
+
+p2 <- ggplot(data, aes(fill = condition, y = value, x = specie)) + 
+  geom_bar(position = "fill", stat = "identity")
+
+ggarrange(p1, p2, ncol = 2, labels = 'auto', common.legend = TRUE)
+```
+
+
+
