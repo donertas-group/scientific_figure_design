@@ -53,7 +53,7 @@
     "href": "02-preperation.html#libraries",
     "title": "2  Setup",
     "section": "2.1 Libraries",
-    "text": "2.1 Libraries\nThere are a few libraries that we recommend using:\n\nlibrary(tidyverse) # Includes ggplot2 + other data wrangling packages\nlibrary(ggpubr) # Publication-ready figures & ggpubr theme\nlibrary(ggthemes) # Additional themes for ggplot2\nlibrary(viridis) # Viridis color palette\nlibrary(colorspace) # For color manipulation\nlibrary(ggforce) # Additional geoms\nlibrary(hexbin) # For hexbin plots\nlibrary(ggridges) # For creating ridgeline plots\nlibrary(gridExtra) # Helps in arranging ggplot2 graphs (inset graphs)\nlibrary(GGally) # Includes ggpairs and other useful functions"
+    "text": "2.1 Libraries\nThere are a few libraries that we recommend using:\n\nlibrary(tidyverse) # Includes ggplot2 + other data wrangling packages\nlibrary(ggpubr) # Publication-ready figures & ggpubr theme\nlibrary(ggthemes) # Additional themes for ggplot2\nlibrary(viridis) # Viridis color palette\nlibrary(colorspace) # For color manipulation\nlibrary(ggforce) # Additional geoms\nlibrary(hexbin) # For hexbin plots\nlibrary(ggridges) # For creating ridgeline plots\nlibrary(gridExtra) # Helps in arranging ggplot2 graphs (inset graphs)\nlibrary(GGally) # Includes ggpairs and other useful functions\nlibrary(ggsci) # color palettes by journals, sci-fi movies, TV shows\nlibrary(pheatmap) # pretty heatmap\nlibrary(ggheatmap) # ggplot compatible heatmap package \nlibrary(ComplexHeatmap) # complex heatmap\nlibrary(ggtree) # to plot trees \nlibrary(ggnetwork) # ggplot compatible network"
   },
   {
     "objectID": "02-preperation.html#theme",

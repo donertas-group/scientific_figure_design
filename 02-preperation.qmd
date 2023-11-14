@@ -20,6 +20,12 @@ library(hexbin) # For hexbin plots
 library(ggridges) # For creating ridgeline plots
 library(gridExtra) # Helps in arranging ggplot2 graphs (inset graphs)
 library(GGally) # Includes ggpairs and other useful functions
+library(ggsci) # color palettes by journals, sci-fi movies, TV shows
+library(pheatmap) # pretty heatmap
+library(ggheatmap) # ggplot compatible heatmap package 
+library(ComplexHeatmap) # complex heatmap
+library(ggtree) # to plot trees 
+library(ggnetwork) # ggplot compatible network
 ```
 
 ## Theme
